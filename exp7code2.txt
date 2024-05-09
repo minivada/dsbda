@@ -1,0 +1,115 @@
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from nltk.probability import FreqDist
+import math
+
+# Sample document
+document = "This is a sample document for text preprocessing. It includes tokenization, POS tagging, stop words removal, stemming, and lemmatization."
+
+# Tokenization
+tokens = word_tokenize(document)
+
+# POS tagging
+pos_tags = nltk.pos_tag(tokens)
+
+# Stop words removal
+stop_words = set(stopwords.words('english'))
+filtered_tokens = [word for word in tokens if word.lower() not in stop_words]
+
+# Stemming
+stemmer = PorterStemmer()
+stemmed_tokens = [stemmer.stem(word) for word in filtered_tokens]
+
+# Lemmatization
+lemmatizer = WordNetLemmatizer()
+lemmatized_tokens = [lemmatizer.lemmatize(word) for word in filtered_tokens]
+
+# Calculate TF
+tf = FreqDist(stemmed_tokens)
+
+# Calculate IDF
+total_docs = 1  # Assuming only one document for simplicity
+idf = {}
+for term in tf.keys():
+    doc_freq = sum(term in doc for doc in [stemmed_tokens])
+    idf[term] = math.log10(total_docs / (doc_freq + 1))  # Adding 1 to avoid division by zero
+
+# Print results
+print("Original Document:", document)
+print("Tokenization:", tokens)
+print("POS Tagging:", pos_tags)
+print("Filtered Tokens after Stopwords Removal:", filtered_tokens)
+print("Stemming:", stemmed_tokens)
+print("Lemmatization:", lemmatized_tokens)
+print("Term Frequency (TF):", tf)
+print("Inverse Document Frequency (IDF):", idf)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#code33
+
+import nltk
+nltk.download("punkt")
+nltk.download("stopwords")
+nltk.download("wordnet")
+nltk.download("averaged_perceptron_tagger")
+# Tokenization
+from nltk import word_tokenize, sent_tokenize
+corpus = "Sachin was the GOAT of the previous generation. Virat is the GOAT of this generation. Shubman will be the GOAT of the next generation"
+print(word_tokenize(corpus))
+print(sent_tokenize(corpus))
+# POS tagging
+from nltk import pos_tag
+tokens = word_tokenize(corpus)
+print(pos_tag(tokens))
+# Stop word removal
+from nltk.corpus import stopwords
+stop_words = set(stopwords.words("english"))
+tokens = word_tokenize(corpus)
+cleaned_tokens = []
+for token in tokens:
+  if (token not in stop_words):
+    cleaned_tokens.append(token)
+print(cleaned_tokens)
+# Stemming
+from nltk.stem import PorterStemmer
+stemmer = PorterStemmer()
+stemmed_tokens = []
+for token in cleaned_tokens:
+  stemmed = stemmer.stem(token)
+  stemmed_tokens.append(stemmed)
+print(stemmed_tokens)
+# Lemmatization
+from nltk.stem import WordNetLemmatizer
+lemmatizer = WordNetLemmatizer()
+lemmatized_tokens = []
+for token in cleaned_tokens:
+  lemmatized = lemmatizer.lemmatize(token)
+  lemmatized_tokens.append(lemmatized)
+print(lemmatized_tokens)
+# TF-IDF
+from sklearn.feature_extraction.text import TfidfVectorizer
+corpus = [
+    "Sachin was the GOAT of the previous generation",
+    "Virat is the GOAT of the this generation",
+    "Shubman will be the GOAT of the next generation"
+]
+vectorizer = TfidfVectorizer()
+matrix = vectorizer.fit(corpus)
+matrix.vocabulary_
+tfidf_matrix = vectorizer.transform(corpus)
+print(tfidf_matrix)
+print(vectorizer.get_feature_names_out())
